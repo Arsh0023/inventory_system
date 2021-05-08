@@ -1,11 +1,8 @@
 import os
 import sqlite3
 
-#BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-#db_path = os.path.join(BASE_DIR, "inventory.db")
-#conn = sqlite3.connect(db_path) #this will make an in memory database.
 conn = sqlite3.connect(':memory:')
-c = conn.cursor() #so that we can execute sql commands.
+c = conn.cursor()
 
 if not os.path.isfile('inventory.db'):
     c.execute("""CREATE TABLE inventory (
@@ -15,9 +12,7 @@ if not os.path.isfile('inventory.db'):
         stock real
         )""")
 
-    conn.commit() #this is finally to commit the changes.
-
-#conn.close() #to close the connection with the database.
+    conn.commit()
 
 class Item():
     def __init__(self,Id=None,name=None,price=None,stock=None):
@@ -62,7 +57,6 @@ class Inventory():
     
     @staticmethod
     def print_inventory():
-        #this should query for all the items in a databse and print them
         c.execute("Select * FROM inventory")
         objs = c.fetchall()
         for ent in objs:
@@ -80,8 +74,6 @@ def main():
 
     while(inp != 6):
         if inp == 1:
-            #add an item to db
-            #if the item already exists then make changes to it
             Id = int(input('Please Enter the Id of the item you would like to add: '))
             name = input('Please Enter the name of the item you would like to add: ')
             price = float(input('Please Enter the price of the item you would like to add: '))
